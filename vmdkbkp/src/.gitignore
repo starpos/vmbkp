@@ -1,0 +1,8 @@
+libvmdkbkp.so
+vmdkbkp
+rdiff2bmp
+check_digest_and_digest
+check_dump_and_dump
+print_bmp
+ipc_lock_manager
+version.hpp

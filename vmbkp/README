@@ -1,0 +1,53 @@
+*******************************************************************************
+Description of files and directories.
+*******************************************************************************
+
+com:
+  source code.
+
+conf:
+  config file samples
+
+vmbkp:
+  script for easy execute java code.
+
+vmbkp.manifest:
+  pack source and class files into one jar file.
+
+vijava2120100715.jar:
+  vi-java library.
+
+dom4j-1.6.1.jar:
+  dom4j required by vi-java.
+
+
+
+  
+*******************************************************************************
+How to build.
+*******************************************************************************
+
+Required tools and libraries.
+  * JAVA SE 6 or above.
+    java, javac, and jar commands are requited.
+    See Makefile for detail.
+
+  * VI-Java 2.1GA or above.
+    http://vijava.sourceforge.net/
+    This is included in the distribution (BSD license).
+
+  * Doxygen, GNU global
+    To build API documents.
+
+Build steps:
+> make
+> make jar
+> make doc # for document.
+
+Then you will get 'vmbkp.jar'.
+
+You must deploy jar files and c++ binaries, then
+edit configuration files for your environment
+in order to use vmbkp.
+
+*******************************************************************************

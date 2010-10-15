@@ -1,0 +1,44 @@
+doCheck()  0.dump
+0...............................Check: OK
+doCheck()  1.dump
+0...............................Check: OK
+doCheck()  0_diff.dump
+0...............................Check: OK
+doCheck()  1_diff.dump
+0...............................Check: OK
+doCheck()  0_incr.dump
+0...............................Check: OK
+doCheck()  1_incr.dump
+0...............................Check: OK
+check  0 vs 0_diff ...
+SAME
+SAME
+check  0 vs 0_incr ...
+SAME
+SAME
+check  0 vs 0_restore ...
+SAME
+SAME
+check  0 vs 0_diff_restore ...
+SAME
+SAME
+check  0 vs 0_incr_restore ...
+SAME
+SAME
+check  1 vs 1_diff ...
+SAME
+SAME
+check  1 vs 1_incr ...
+SAME
+SAME
+check  1 vs 1_restore ...
+SAME
+SAME
+check  1 vs 1_diff_restore ...
+SAME
+SAME
+check  1 vs 1_incr_restore ...
+SAME
+SAME
+check  1-0_diff.rdiff vs 1-0_incr.rdiff ...
+SAME

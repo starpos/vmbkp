@@ -1,0 +1,19 @@
+#/bin/sh
+
+# Make symlink to repository/vmdkbkp/src as ./bin
+
+# vSphere connect options.
+CONNECT_OPT="--server vcenter --username user --password pass"
+
+# Virtual machine for dump test.
+VM_D=vm-100 # Vm moref. Prepare two snapshots.
+SNAPSHOT_D0=snapshot-1000 # snapshot for generation 0
+DISKPATH_D0="[STORAGE] vmname/vmname_1.vmdk"
+SNAPSHOT_D1=snapshot-1001 #t snapshot for generation 1
+DISKPATH_D1="[STORAGE] vmname/vmname_1-000001.vmdk"
+
+# Virtual machine for restore test.
+# This vm should be powered off.
+VM_R=vm-200 # Vm moref. Prepare empty vmdk.
+DISKPATH_R="[STORAGE] vmname-restore/vmname-restore_1.vmdk"
+

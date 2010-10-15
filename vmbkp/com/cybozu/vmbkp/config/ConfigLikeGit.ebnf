@@ -1,0 +1,58 @@
+ALL = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' |
+      'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' |
+      'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' |
+      'V' | 'W' | 'X' | 'Y' | 'Z';
+
+ALS = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' |
+      'h' | 'i' | 'j' | 'k' | 'l' | 'm' | 'n' |
+      'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' |
+      'v' | 'w' | 'x' | 'y' | 'z';
+
+AL = ALL | ALS ;
+
+DIGIT = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' ;
+SIGN = '+' | '-' ;
+NINT = [ SIGN ] DIGIT { DIGIT } ;
+INTUNIT = 'k' | 'm' | 'g' | 't' | 'p' | 'K' | 'M' | 'G' | 'T' | 'P' ;
+EXINT = NINT INTUNIT ;
+INTEGER = NINT | EXINT
+
+TRUE = 'true' | '1' | 'on' ;
+FALSE = 'false' | '0' | 'off' ;
+BOOL = TRUE | FALSE ;
+
+SPACE = ' ' | '\t' ;
+SPACES = SPACE { SPACE } ;
+EOL = '\r\n' | '\r' | '\r\n' ;
+
+BCODE = '_' | '-';
+
+CODE = SIGN | '!' | '@' | '$' | '%' | '^' | '&' | '*' |
+       '(' | ')' |  '_' | '|' | '~' |
+       '[' | ']' | '{' | '}' |  ':' | ',' | '.' |
+       '<' | '>' | '/' | '?';
+
+QCODE = CODE | SPACE | "'" | '\\"' | '\\' | '#' |  ';' | '=';
+
+BCHAR = AL | DIGIT | BCODE;
+BSTRING = BCHAR { BCHAR };
+
+NCHAR = AL | DIGIT | CODE;
+NSTRING = NCHAR { { SPACE } NCHAR {NCHAR} } ;
+
+QCHAR = AL | DIGIT | QCODE;
+QSTRING = '"' QCHAR  { QCHAR } '"';
+
+STRING = NSTRING | QSTRING ;
+
+COMMENT = {SPACE} ( '#' | ';' ) { SPACE | QCHAR | '"' }
+
+FSTGROUP = NSTRING;
+SNDGROUP = STRING;
+GROUP = {SPACE} '[' {SPACE} FSTGROUP {SPACE} [SNDGROUP {SPACE}] ']' {SPACE};
+
+KEY = INTEGER | STRING;
+VAL = INTEGER | STRING;
+ENTRY = {SPACE} KEY {SPACE} '=' {SPACE} [VAL {SPACE}];
+
+LINE = ( GROUP [ COMMENT ] | ENTRY [ COMMENT ] | COMMENT ) EOL

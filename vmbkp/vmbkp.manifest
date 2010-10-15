@@ -1,0 +1,2 @@
+Main-Class: com.cybozu.vmbkp.control.VmbkpMain
+Class-Path: dom4j-1.6.1.jar vijava2120100715.jar

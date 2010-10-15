@@ -1,0 +1,19 @@
+/**
+ * @file
+ * @brief version string.
+ *
+ * Copyright (C) 2009,2010 Cybozu Inc., all rights reserved.
+ *
+ * @author Takashi HOSHINO <hoshino@labs.cybozu.co.jp>
+ */
+#ifndef VMDKBACKUP_VERSION_HPP_
+#define VMDKBACKUP_VERSION_HPP_
+
+#include <string>
+
+const int VIXDISKLIB_VERSION_MAJOR = 1;
+const int VIXDISKLIB_VERSION_MINOR = 2;
+
+const std::string VMDKBKP_VERSION("XXXXXXXXXX");
+
+#endif /* VMDKBACKUP_VERSION_HPP_ */

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+java -ea -server -jar vmbkp.jar $@
+

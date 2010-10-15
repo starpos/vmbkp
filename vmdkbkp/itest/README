@@ -1,0 +1,32 @@
+Integrated test of the vmdkbkp tool.
+
+1. Prepare 1st virtual machine with a disk.
+   Get moref of the vm VM_D.
+
+2. Write some data to the disk in the 1st vm.
+
+3. Make 1st snapshot of the vm.
+   Get moref of the snapshot as SNAPSHOT_D0
+   and disk path in the snapshot as DISKPATH_D0.
+
+4. Write some data to the disk in the 1st vm.
+
+5. Make 2nd snapshot of the vm.
+   Get moref of the snapshot as SNAPSHOT_D1
+   and disk path in the snapshot as DISKPATH_D1.
+
+6. Prepare 2nd virtual machine with a empty disk
+   where the disk size is the same with the 1st vm.
+   Get moref of the vm as VM_R
+   and disk path as DISKPATH_R.
+   Let 2nd vm be powered-down.
+
+7. Make symlink to 'repository/vmdkbkp/src' as './bin'.
+   If you try an integration test in the working directory,
+   just type 'make bindir' to get it.
+
+8. Copy config.sh.sample to config.sh and edit it.
+   Set variables with the above information.
+
+9. Just type 'make test' to execute an integration test.
+
