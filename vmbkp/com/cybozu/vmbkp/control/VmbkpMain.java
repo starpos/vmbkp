@@ -355,8 +355,7 @@ public class VmbkpMain
                 
                 vmArcMgr.lock(timeoutSec);
                 vmArcMgr.reload();
-                backupVm(vmm, vmArcMgr, backupInfo);
-                ret = true;
+                ret = backupVm(vmm, vmArcMgr, backupInfo);
                 
             } catch (Exception e) {
                 logException
@@ -802,8 +801,10 @@ public class VmbkpMain
     
     /**
      * Backup the specified virtual machine.
+     *
+     * @return True in success.
      */
-    public static void backupVm
+    public static boolean backupVm
         (VirtualMachineManager vmm, VmArchiveManager vmArcMgr,
          BackupInfo backupInfo)
         throws Exception
@@ -822,7 +823,7 @@ public class VmbkpMain
         if (backupInfo.isDryRun) {
             msg = "Backup ends cause dryrun.";
             System.out.println(msg); logger_.info(msg);
-            return;
+            return true;
         }
 
         /* Decide to use snapshot or not.
@@ -936,6 +937,7 @@ public class VmbkpMain
         System.out.println(msg); logger_.info(msg);
 
         logger_.info("backupVm() end.");
+        return ret;
     }
 
     /**
