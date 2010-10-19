@@ -74,7 +74,7 @@ public:
      * @return True if isP_ reaches end of file.
      */
     bool isEOF() const {
-        return (isP_->peek() != EOF);
+        return (isP_->peek() == EOF);
     }
     /**
      * Reset the flags.
@@ -152,7 +152,7 @@ void readWorker(ReadWorkerData<T>* rwdP)
 
     /* Read data. */
     try {
-        while (rwd.isEOF() && ! queue.isClosed()) {
+        while (! rwd.isEOF() && ! queue.isClosed()) {
             rwd.readAndEnqueue();
         }
         rwd.end();
