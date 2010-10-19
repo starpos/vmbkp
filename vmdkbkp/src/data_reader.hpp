@@ -67,6 +67,7 @@ public:
 
         TPtr dataP;
         read(dataP);
+        if (isEOF()) { isEnd_ = true; }
         enqueue(dataP);
     }
     /**
@@ -95,12 +96,6 @@ public:
      */
     void waitInitialized() const {
         while (! isInitialized_) {}
-    }
-    /**
-     * Set isEnd_ flag when input stream reachs end.
-     */
-    void end() {
-        isEnd_ = true;
     }
     /**
      * End flag is on or off.
@@ -155,11 +150,10 @@ void readWorker(ReadWorkerData<T>* rwdP)
         while (! rwd.isEOF() && ! queue.isClosed()) {
             rwd.readAndEnqueue();
         }
-        rwd.end();
 
     } catch (const ExceptionStack& e) {
         WRITE_LOG0("readWorker: exception %s\n", e.sprint().c_str());
-        rwd.end(); queue.close();
+        queue.close();
     }
     WRITE_LOG1("readWorker finished\n"); /* debug */
 }
