@@ -241,7 +241,6 @@ void ArchiveManager::readDumpHeader(
     VmdkDumpHeader& dumpH)
 {
     assert(isOpenDumpIn_);
-    MY_CHECK_AND_THROW(! dumpInMgrP_->isEnd(), "End of stream.");
     try {
         dumpH.copyDataFrom(*dumpInMgrP_->getH());
         
@@ -254,7 +253,6 @@ void ArchiveManager::readDigestHeader(
     VmdkDigestHeader& digestH)
 {
     assert(isOpenDigestIn_);
-    MY_CHECK_AND_THROW(! digestInMgrP_->isEnd(), "End of stream.");
     try {
         digestH.copyDataFrom(*digestInMgrP_->getH());
         

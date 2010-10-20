@@ -51,9 +51,10 @@ public:
         : isP_(isP)
         , queueP_(queueP)
         , tmpDataP_()
-        , generatorP_(generatorP)
-        , isInitialized_(false)
-        , isEnd_(false) {}
+        , generatorP_(generatorP) {
+
+        reset();
+    }
     /**
      * Get reference of the queue.
      */
@@ -82,7 +83,7 @@ public:
      */
     void reset() {
         isInitialized_ = false;
-        isEnd_ = false;
+        isEnd_ = isEOF();
     }
     /**
      * Set isInitialized_ flag true.
