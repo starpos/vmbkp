@@ -36,10 +36,11 @@ import com.cybozu.vmbkp.util.Utility;
  */
 enum ResourceType
 {
-    IDE_CONTROLLER, SCSI_CONTROLLER, DISK_DRIVE, UNKNOWN;
+    IDE_CONTROLLER, SCSI_CONTROLLER, CDROM_DRIVE, DISK_DRIVE, UNKNOWN;
 
     private static final String IDE_CONTROLLER_ID  =  "5";
     private static final String SCSI_CONTROLLER_ID =  "6";
+    private static final String CDROM_DRIVE_ID     = "15";
     private static final String DISK_DRIVE_ID      = "17";
     private static final String UNKNOWN_ID         = "unknown";
 
@@ -52,6 +53,8 @@ enum ResourceType
             return SCSI_CONTROLLER_ID;
         case DISK_DRIVE:
             return DISK_DRIVE_ID;
+        case CDROM_DRIVE:
+            return CDROM_DRIVE_ID;
         default:
             return UNKNOWN_ID;
         }
@@ -177,8 +180,9 @@ public class VmbkpOvf
 
         for (Element item: itemList) {
             
-            if ((matchResourceType
-                 (item, ResourceType.DISK_DRIVE)) == false) {
+            if ((matchResourceType(item, ResourceType.DISK_DRIVE) == false) &&
+                (matchResourceType(item, ResourceType.CDROM_DRIVE) == false))
+            {
                 continue;
             }
             
