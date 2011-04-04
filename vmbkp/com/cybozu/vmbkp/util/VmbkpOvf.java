@@ -110,21 +110,36 @@ public class VmbkpOvf
     }
 
     /**
-     * Called from deleteFilesInReferences() and deleteSisksInDiskSection().
+     * Delete all child elements in a specified parent element.
+     */
+    private void deleteAllNodesWithTagName(Element parent, String childTagName) {
+
+        Node child = parent.getFirstChild();
+        while (child != null) {
+            Node next = child.getNextSibling();
+            if (child.getNodeType() == Node.ELEMENT_NODE) {
+                Element childE = (Element)child;
+                
+                if (childE.getTagName().equals(childTagName)) {
+                    logger_.fine(String.format("Delete %s/%s",
+                                               parent.getTagName(),
+                                               childE.getTagName()));
+                    parent.removeChild(child);
+                }
+            }
+            child = next;
+        }
+    }
+    
+    /**
+     * Called from deleteFilesInReferences() and deleteDisksInDiskSection().
      */
     private void deleteAllNodesWithTagNames(String parentTagName, String childTagName)
     {
         Element root = doc_.getDocumentElement();
         Element parent = getElementsByTagName(root, parentTagName).get(0);
-        Node child = parent.getFirstChild();
-        while (child != null) {
-            Node next = child.getNextSibling();
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                if (((Element) child).getTagName().equals(childTagName)) {
-                    parent.removeChild(child);
-                }
-            }
-            child = next;
+        if (parent != null) {
+            deleteAllNodesWithTagName(parent, childTagName);
         }
     }
     
@@ -180,9 +195,7 @@ public class VmbkpOvf
 
         for (Element item: itemList) {
             
-            if ((matchResourceType(item, ResourceType.DISK_DRIVE) == false) &&
-                (matchResourceType(item, ResourceType.CDROM_DRIVE) == false))
-            {
+            if (matchResourceType(item, ResourceType.DISK_DRIVE) == false) {
                 continue;
             }
             
@@ -191,10 +204,30 @@ public class VmbkpOvf
                 
             ret.add(parentId);
             virtualHardware.removeChild(item);
-            logger_.info("Deleted disk info from ovf file.");
+            logger_.info("Deleted disk info from the ovf file.");
         }
         
         return ret;
+    }
+
+    /**
+     * Delete <rasd:HostResource> element from <Item> sections
+     * with CD-ROM resource type.
+     */
+    public void deleteMountedCdromInfoInHardwareSection() {
+        
+        Element virtualHardware = getVirtualHardwareElement();
+
+        List<Element> itemList = 
+            getElementsByTagName(virtualHardware, "Item");
+
+        for (Element item:itemList) {
+
+            if (matchResourceType(item, ResourceType.CDROM_DRIVE)) {
+                deleteAllNodesWithTagName(item, "rasd:HostResource");
+                logger_.info("Deleted mounted CD-ROM info from the ovf file.");
+            }
+        }
     }
 
     /**

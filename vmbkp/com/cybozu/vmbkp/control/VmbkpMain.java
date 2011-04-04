@@ -1043,6 +1043,9 @@ public class VmbkpMain
             Set<String> ctrlIdSet = ovf.deleteDiskDevicesInHardwareSection();
             ovf.deleteControllerDevicesWithoutChildInHardwareSection(ctrlIdSet);
 
+            /* Delete mounted cd-rom information. */
+            ovf.deleteMountedCdromInfoInHardwareSection();
+
             /* Fix indent of xml data for human's eary read. */
             XmlIndent xmli = new XmlIndent(ovf.toString());
             xmli.fixIndent();

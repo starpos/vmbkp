@@ -62,6 +62,9 @@ public class TestOvf
             Utility.printList(ctrlIdSet, "ctrlIdSet begin\n", "ctrlIdSet end\n");
             ovf.deleteControllerDevicesWithoutChildInHardwareSection(ctrlIdSet);
 
+            /* Delete mounted cd-rom information. */
+            ovf.deleteMountedCdromInfoInHardwareSection();
+            
             /* fix indent of xml data for human's easy read. */
             XmlIndent xmli = new XmlIndent(ovf.toString());
             xmli.fixIndent();
