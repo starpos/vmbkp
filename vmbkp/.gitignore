@@ -1,4 +1,5 @@
 vmbkp.jar
+*.class
 apidoc/
 javadoc/
 jarsrc

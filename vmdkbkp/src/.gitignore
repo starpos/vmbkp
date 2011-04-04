@@ -6,3 +6,4 @@ check_dump_and_dump
 print_bmp
 ipc_lock_manager
 version.hpp
+*.o
