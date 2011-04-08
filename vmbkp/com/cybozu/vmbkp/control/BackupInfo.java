@@ -9,6 +9,7 @@
 package com.cybozu.vmbkp.control;
 
 import com.cybozu.vmbkp.config.FormatInt;
+import com.cybozu.vmbkp.util.BackupMode;
 
 /**
  * @brief Information for backup command.
@@ -19,7 +20,8 @@ public class BackupInfo
     public boolean isDryRun;
     public boolean isGzip;
     public boolean isSan;
-    
+    public BackupMode mode;
+
     /**
      * Constructor.
      * This create required informatino for backup
@@ -32,7 +34,8 @@ public class BackupInfo
         isDryRun = false;
         isGzip = false;
         isSan = true;
-        
+        mode = BackupMode.UNKNOWN;
+
         if (cmdLine.isOption("--novmdk")) {
             isNoVmdk = true;
         }
@@ -47,6 +50,9 @@ public class BackupInfo
         }
         if (cmdLine.isOption("--nbd")) {
             isSan = false;
+        }
+        if (cmdLine.isOption("--mode")) {
+           mode = BackupMode.parse(cmdLine.getOptionArgs("--mode").get(0));
         }
     }
 

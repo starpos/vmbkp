@@ -897,7 +897,7 @@ public class VmbkpMain
                     ret = true;
                 } else {
                     ret = backupVmdk
-                        (vmm, vmArcMgr, snap, vmdkInfo, backupInfo.isSan);
+                        (vmm, vmArcMgr, snap, vmdkInfo, backupInfo);
                     msg = String.format("Dump vmdk %s %s.",
                                         vmdkInfo.uuid_,
                                         (ret ? "succeeded" : "failed"));
@@ -948,9 +948,10 @@ public class VmbkpMain
          VmArchiveManager vmArcMgr,
          SnapshotManager snap,
          VmdkInfo vmdkInfo,
-         boolean isSan)
+         BackupInfo info)       /* Use isSan and mode */
     {
         boolean ret = false;
+        boolean hasChangedBlocks = false;
 
         ProfileGeneration profGen = vmArcMgr.getTargetGeneration();
 
@@ -966,17 +967,32 @@ public class VmbkpMain
         if (isInc) {
             /* profGen.setIsChange(diskId, false)
                may be called inside it. */
-            isInc = getAndSaveChangedBlocksOfDisk
+            hasChangedBlocks = getAndSaveChangedBlocksOfDisk
                 (snap, vmArcMgr, vmdkInfo, diskId);
         }
-                
+
+        /* If ctkEnabled not available, turn off incr and delta mode */
+        if (!hasChangedBlocks) {
+            isInc = false;
+        }
+
         /* Dump archives with vmdkbkp tool. */
         BackupMode mode = BackupMode.FULL;
-        if (isInc)       { mode = BackupMode.INCR; }
-        else if (isDiff) { mode = BackupMode.DIFF; }
-        else             { mode = BackupMode.FULL; }
+        if (info.mode == BackupMode.UNKNOWN) {
+            if (isInc) { mode = BackupMode.INCR; }
+            else if (isDiff) { mode = BackupMode.DIFF; }
+            else             { mode = BackupMode.FULL; }
+
+        } else {   /* --mode was specified in command line */
+            if ((isInc   && info.mode == BackupMode.INCR)  ||
+                (isDiff  && info.mode == BackupMode.DIFF)) { 
+                mode = info.mode;
+            } else {
+                mode = BackupMode.FULL;
+            }
+        }
         profGen.setBackupMode(diskId, mode);
-            
+
         logger_.info("isInc: " + isInc +
                      " isDiff: " + isDiff + 
                      " mode: " + mode.toString()); /* debug */
@@ -997,7 +1013,7 @@ public class VmbkpMain
             gm_.disconnect();
             
             ret = VmdkBkp.doDump
-                (mode, vmm.getMoref(), vmArcMgr, diskId, isSan);
+                (mode, vmm.getMoref(), vmArcMgr, diskId, info.isSan);
         }
         profGen.setDumpEndTimestamp(diskId);
             

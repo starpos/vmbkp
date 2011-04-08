@@ -106,6 +106,7 @@ public class VmbkpCommandLine
         /* optional for backup/restore */
         registerOption("--san", 0);
         registerOption("--nbd", 0);
+        registerOption("--mode", 1);
         
         /* optional for backup/restore */
         registerOption("--novmdk", 0); 
@@ -214,10 +215,11 @@ public class VmbkpCommandLine
              "  --help:           show this message.\n" +
              "\n" +
              "Options for backup command:\n" +
-             "  --novmdk: backup except vmdk contents.\n" +
-             "  --dryrun: do not backup really.\n" +
-             "  --gzip:   use gzip to output compression.\n" +
-             "  --nbd:    use NBD transfer instead of SAN.\n" +
+             "  --novmdk:       backup except vmdk contents.\n" +
+             "  --dryrun:       do not backup really.\n" +
+             "  --gzip:         use gzip to output compression.\n" +
+             "  --nbd:          use NBD transfer instead of SAN.\n" +
+             "  --mode <mode>:  specify wanted backup level (incr, diff, full).\n" +
              "\n" +
              "Options for restore command:\n" +
              "  --name <name>:      new name of virtual machine (required).\n" +
