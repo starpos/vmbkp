@@ -941,6 +941,37 @@ public class VmbkpMain
     }
 
     /**
+     * Determine backup mode.
+     *
+     * @param reuestMode Request backup mode.
+     * @param isDiff True if differential backup is available.
+     * @param isInc True if incremental backup is available.
+     * @return Determined bacukp mode.
+     */
+    private static BackupMode determineBackupMode
+        (BackupMode requestMode, boolean isDiff, boolean isInc)
+    {
+        BackupMode mode = BackupMode.UNKNOWN;
+
+        /* --mode was specified in command line */
+        if (requestMode != BackupMode.UNKNOWN) { 
+            if ((isInc   && requestMode == BackupMode.INCR) ||
+                (isDiff  && requestMode == BackupMode.DIFF) ||
+                (           requestMode == BackupMode.FULL)) { 
+                mode = requestMode;
+            }
+        }
+        /* If --mode is not specified, use suitable mode. */
+        if (mode == BackupMode.UNKNOWN) {
+            if (isInc)       { mode = BackupMode.INCR; }
+            else if (isDiff) { mode = BackupMode.DIFF; }
+            else             { mode = BackupMode.FULL; }
+        }
+        assert mode != BackupMode.UNKNOWN;
+        return mode;
+    }
+
+    /**
      * Backup each vmdk file.
      */
     public static boolean backupVmdk
@@ -965,32 +996,18 @@ public class VmbkpMain
 
         /* Get changed block info and save if required. */
         if (isInc) {
-            /* profGen.setIsChange(diskId, false)
-               may be called inside it. */
+            /* profGen.setIsChange(diskId, false) will be called inside it. */
             hasChangedBlocks = getAndSaveChangedBlocksOfDisk
                 (snap, vmArcMgr, vmdkInfo, diskId);
         }
 
-        /* If ctkEnabled not available, turn off incr and delta mode */
-        if (!hasChangedBlocks) {
+        /* If ctkEnabled not available, turn off incr mode */
+        if (! hasChangedBlocks) {
             isInc = false;
         }
 
         /* Dump archives with vmdkbkp tool. */
-        BackupMode mode = BackupMode.FULL;
-        if (info.mode == BackupMode.UNKNOWN) {
-            if (isInc) { mode = BackupMode.INCR; }
-            else if (isDiff) { mode = BackupMode.DIFF; }
-            else             { mode = BackupMode.FULL; }
-
-        } else {   /* --mode was specified in command line */
-            if ((isInc   && info.mode == BackupMode.INCR)  ||
-                (isDiff  && info.mode == BackupMode.DIFF)) { 
-                mode = info.mode;
-            } else {
-                mode = BackupMode.FULL;
-            }
-        }
+        BackupMode mode = determineBackupMode(info.mode, isDiff, isInc);
         profGen.setBackupMode(diskId, mode);
 
         logger_.info("isInc: " + isInc +
