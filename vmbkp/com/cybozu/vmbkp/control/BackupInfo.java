@@ -67,6 +67,7 @@ public class BackupInfo
         sb.append(String.format("[isDryRun %s]", Boolean.toString(isDryRun)));
         sb.append(String.format("[isGzip %s]", Boolean.toString(isGzip)));
         sb.append(String.format("[isSan %s]", Boolean.toString(isSan)));
+        sb.append(String.format("[mode %s]", mode.toString()));
         
         return sb.toString();
     }

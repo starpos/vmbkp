@@ -1010,9 +1010,11 @@ public class VmbkpMain
         BackupMode mode = determineBackupMode(info.mode, isDiff, isInc);
         profGen.setBackupMode(diskId, mode);
 
-        logger_.info("isInc: " + isInc +
-                     " isDiff: " + isDiff + 
-                     " mode: " + mode.toString()); /* debug */
+        String msg = String.format("Available modes: full%s%s. Used mode: %s.",
+                                   (isDiff ? ", diff" : ""),
+                                   (isInc ? ", incr" : ""),
+                                   mode.toString());
+        System.out.println(msg); logger_.info(msg);
 
         profGen.setDumpBeginTimestamp(diskId);
         if (mode == BackupMode.INCR &&
