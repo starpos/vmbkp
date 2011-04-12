@@ -309,7 +309,7 @@ public class VirtualMachineManager
     /**
      * Task type for snapshot.
      */
-    private enum TaskType { CREATE, DELETE, NONE }
+    private enum TaskType { CREATE, DELETE, REVERT, NONE }
 
     /**
      * Task wrapper for snapshot.
@@ -333,6 +333,9 @@ public class VirtualMachineManager
                 break;
             case DELETE:
                 task = vmsnap.removeSnapshot_Task(true);
+                break;
+            case REVERT:
+                task = vmsnap.revertToSnapshot_Task(null, true);
                 break;
             default:
                 throw new Exception("Snapshot TaskType is wrong.");
@@ -373,6 +376,19 @@ public class VirtualMachineManager
         return snapshotTaskDetail(TaskType.DELETE, snapName,
                                   "Snapshot was deleted successfully.\n",
                                   "Delete snapshot task failed.\n");
+    }
+
+    /**
+     * Revert a virtual machine to a snapshot.
+     *
+     * @param snapName snapshot name to revert.
+     * @return true in success, false in failure.
+     */
+    public boolean revertToSnapshot(String snapName)
+    {
+        return snapshotTaskDetail(TaskType.REVERT, snapName,
+                                  "Virtual machine was reverted successfully.\n",
+                                  "Revert snapshot task failed.\n");
     }
 
     /**

@@ -1455,7 +1455,7 @@ public class VmbkpMain
     /**
      * Task type for snapshot. Internal use only.
      */
-    private enum TaskType { CREATE, DELETE, NONE }
+    private enum TaskType { CREATE, DELETE, REVERT, NONE }
     
     /**
      * Operation for a snapshot.
@@ -1477,6 +1477,13 @@ public class VmbkpMain
             case DELETE:
                 if (! vmm.deleteSnapshot(snapName)) {
                     String msg = String.format("Delete snapshot %s failed.", snapName);
+                    throw new Exception(msg);
+                }
+                break;
+            
+            case REVERT:
+                if (! vmm.revertToSnapshot(snapName)) {
+                    String msg = String.format("Reverting to snapshot %s failed.", snapName);
                     throw new Exception(msg);
                 }
                 break;
@@ -1508,5 +1515,17 @@ public class VmbkpMain
         throws Exception
     {
         operateSnapshotDetail(TaskType.DELETE, vmm, snapName);
+    }
+
+    /**
+     * Revert to a snapshot.
+     *
+     * @param vmm Virtual machine manager.
+     * @param snapName snapshot name.
+     */
+    public static void revertToSnapshot(VirtualMachineManager vmm, String snapName)
+        throws Exception
+    {
+        operateSnapshotDetail(TaskType.REVERT, vmm, snapName);
     }
 }
