@@ -1,4 +1,7 @@
 PREFIX=
+VCENTER_HOST=
+USERNAME=
+PASSWORD=
 
 default: build
 build: build_vmbkp build_vmdkbkp
@@ -10,4 +13,4 @@ build_vmdkbkp:
 
 install:
 	-@ if [ -z "$(PREFIX)" ]; then echo "Specify PREFIX"; \
-	else ./install.sh $(PREFIX); fi
+	else ./install.sh $(PREFIX) $(VCENTER_HOST) $(USERNAME) $(PASSWORD); fi

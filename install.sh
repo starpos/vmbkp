@@ -5,6 +5,10 @@ if [ -z "$1" ]; then
     exit
 fi
 
+VSPHERE_VCENTER_HOST=${2-"VCENTER_HOST"}
+VSPHERE_USERNAME=${3-"USERNAME"}
+VSPHERE_PASSWORD=${4-"PASSWORD"}
+
 REPOSITORY=$(cd $(dirname $0);pwd)
 WORKDIR=`pwd`
 BASEDIR=$(dirname $1)
@@ -34,6 +38,9 @@ cp *.jar vmbkp $INSTALLDIR/
 cat conf/vmbkp_global.conf \
     |sed "s|ARCHIVE_DIRECTORY|$ARCDIR|" \
     |sed "s|VMDKBKP_PATH|$INSTALLDIR/bin/vmdkbkp|" \
+    |sed "s|VCENTER_HOST|$VSPHERE_VCENTER_HOST|" \
+    |sed "s|USERNAME|$VSPHERE_USERNAME|" \
+    |sed "s|PASSWORD|$VSPHERE_PASSWORD|" \
     > $INSTALLDIR/vmbkp_global.conf
 cp conf/vmbkp_group.conf $INSTALLDIR/
 
