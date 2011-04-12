@@ -206,31 +206,6 @@ public class VirtualMachineManager
     }
     
     /**
-     * Create snapshot of a specified virtual machine.
-     *
-     * @param snapName the name of new snapshot.
-     * @return True in success, false in failure.
-     */
-    public boolean createSnapshot(String snapName)
-    {
-        try {
-            Task task = vm_.createSnapshot_Task(snapName, null, false, false);
-            String ret = task.waitForTask();
-            if (ret.equals("success")) {
-                logger_.info
-                    (String.format
-                     ("%s: snapshot was created successfully.\n", ret));
-                return true;
-            } else {
-                logger_.info
-                    (String.format
-                     ("%s: createSnapshot task failed.\n", ret));
-                return false;
-            }
-        } catch (Exception e) { logger_.warning(Utility.toString(e)); return false; }
-    }
-
-    /**
      * Find ManagedEntity from ManagedObject of snapshot.
      *
      * @param vm A virtual machine.
@@ -330,7 +305,63 @@ public class VirtualMachineManager
         }
         return null;
     }
+
+    /**
+     * Task type for snapshot.
+     */
+    private enum TaskType { CREATE, DELETE, NONE }
+
+    /**
+     * Task wrapper for snapshot.
+     */
+    private boolean snapshotTaskDetail(TaskType type, String snapName,
+                                       String messageInSuccess, String messageInFailure)
+    {
+
+        VirtualMachineSnapshot vmsnap = null;
+
+        if (type != TaskType.CREATE) {
+            vmsnap = getSnapshotInTree(snapName);
+            if (vmsnap == null) { return false; }
+        }
+
+        try {
+            Task task = null;
+            switch (type) {
+            case CREATE:
+                task = vm_.createSnapshot_Task(snapName, null, false, false);
+                break;
+            case DELETE:
+                task = vmsnap.removeSnapshot_Task(true);
+                break;
+            default:
+                throw new Exception("Snapshot TaskType is wrong.");
+            }
+            assert task != null;
+            String ret = task.waitForTask();
+            if (ret.equals("success")) {
+                logger_.info(messageInSuccess);
+                return true;
+            } else {
+                logger_.info(messageInFailure);
+                return false;
+            }
+        } catch (Exception e) { logger_.warning(Utility.toString(e)); return false; }
+    }
     
+    /**
+     * Create snapshot of a specified virtual machine.
+     *
+     * @param snapName the name of new snapshot.
+     * @return True in success, false in failure.
+     */
+    public boolean createSnapshot(String snapName)
+    {
+        return snapshotTaskDetail(TaskType.CREATE, snapName,
+                                  "Snapshot was created successfully.\n",
+                                  "Snapshot creation task failed.\n");
+    }
+
     /**
      * Delete snapshot of virtual machine
      *
@@ -339,24 +370,9 @@ public class VirtualMachineManager
      */
     public boolean deleteSnapshot(String snapName)
     {
-        VirtualMachineSnapshot vmsnap = getSnapshotInTree(snapName);
-        if (vmsnap == null) { return false; }
-
-        try {
-            Task task = vmsnap.removeSnapshot_Task(true);
-            String ret = task.waitForTask();
-            if (ret.equals("success")) {
-                logger_.info
-                    (String.format
-                     ("%s: snapshot was deleted successfully.\n", ret));
-                return true;
-            } else {
-                logger_.info
-                    (String.format
-                     ("%s: deleteSnapshot task failed.\n", ret));
-                return false;
-            }
-        } catch (Exception e) { logger_.warning(Utility.toString(e)); return false; }
+        return snapshotTaskDetail(TaskType.DELETE, snapName,
+                                  "Snapshot was deleted successfully.\n",
+                                  "Delete snapshot task failed.\n");
     }
 
     /**

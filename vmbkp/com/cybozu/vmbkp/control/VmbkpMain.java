@@ -1453,6 +1453,44 @@ public class VmbkpMain
     }
 
     /**
+     * Task type for snapshot. Internal use only.
+     */
+    private enum TaskType { CREATE, DELETE, NONE }
+    
+    /**
+     * Operation for a snapshot.
+     */
+    private static void operateSnapshotDetail(TaskType type,
+                                              VirtualMachineManager vmm, String snapName)
+        throws Exception
+    {
+        VmdkBkp.lock(cfgGlobal_);
+        try {
+            switch (type) {
+            case CREATE:
+                if (! vmm.createSnapshot(snapName)) {
+                    String msg = String.format("Create snapshot %s failed.", snapName);
+                    throw new Exception(msg);
+                }
+                break;
+            
+            case DELETE:
+                if (! vmm.deleteSnapshot(snapName)) {
+                    String msg = String.format("Delete snapshot %s failed.", snapName);
+                    throw new Exception(msg);
+                }
+                break;
+            
+            default:
+                assert false;
+            }
+        } finally {
+            VmdkBkp.unlock();
+        }
+    }
+
+    
+    /**
      * Create snapshot (snapshot name is created by timestamp).
      *
      * @param vmm Virtual machine manager.
@@ -1460,34 +1498,15 @@ public class VmbkpMain
     public static void createSnapshot(VirtualMachineManager vmm, String snapName)
         throws Exception
     {
-        VmdkBkp.lock(cfgGlobal_);
-        try {
-            if (! vmm.createSnapshot(snapName)) {
-                String msg = String.format("Create snapshot %s failed.", snapName);
-                throw new Exception(msg);
-            }
-        } finally {
-            VmdkBkp.unlock();
-        }
+        operateSnapshotDetail(TaskType.CREATE, vmm, snapName);
     }
 
     /**
-     * Delete snapshot with the specified name.
-     *
-     * @param vmm Virtual machine manager.
-     * @param snapName snapshot name.
+     * Delete snapshot.
      */
     public static void deleteSnapshot(VirtualMachineManager vmm, String snapName)
         throws Exception
     {
-        VmdkBkp.lock(cfgGlobal_);
-        try {
-            if (! vmm.deleteSnapshot(snapName)) {
-                String msg = String.format("Delete snapshot %s failed.", snapName);
-                throw new Exception(msg);
-            }
-        } finally {
-            VmdkBkp.unlock();
-        }
+        operateSnapshotDetail(TaskType.DELETE, vmm, snapName);
     }
 }
