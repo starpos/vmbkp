@@ -14,7 +14,7 @@ vmbkp:
 vmbkp.manifest:
   pack source and class files into one jar file.
 
-vijava2120100715.jar:
+vijava2120100824.jar:
   vi-java library.
 
 dom4j-1.6.1.jar:

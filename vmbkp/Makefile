@@ -4,7 +4,7 @@ TARGET=vmbkp.jar
 JAVAC=javac
 JAR=jar
 BUILD_FLAGS=-Xlint:deprecation -Xlint:unchecked
-VIJAVA_CLASSPATH=dom4j-1.6.1.jar:vijava2120100715.jar:.
+VIJAVA_CLASSPATH=dom4j-1.6.1.jar:vijava2120100824.jar:.
 ifeq ($(DEBUG),1)
 	DEBUG_FLAGS=-g:none
 else
