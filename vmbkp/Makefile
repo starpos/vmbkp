@@ -20,7 +20,7 @@ build: version build_config build_util build_soap build_profile build_control bu
 clean:
 	rm -f com/cybozu/vmbkp/**/*.class
 
-com/cybozu/vmbkp/control/VmbkpVersion.java: com/cybozu/vmbkp/control/VmbkpVersion.java.template
+com/cybozu/vmbkp/control/VmbkpVersion.java: com/cybozu/vmbkp/control/VmbkpVersion.java.template ../VERSION
 	sed "s|XXXXXXXXXX|`cat ../VERSION`|" $< > $@
 
 version: com/cybozu/vmbkp/control/VmbkpVersion.java
