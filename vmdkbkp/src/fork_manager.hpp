@@ -207,8 +207,8 @@ private:
         WRITE_LOG1("ForkManager::initializeParent() called.\n");
         ::close(childInFd_);
         ::close(childOutFd_);
-        is_.push(io::file_descriptor_source(parentInFd_));
-        os_.push(io::file_descriptor_sink(parentOutFd_));
+        is_.push(io::file_descriptor_source(parentInFd_, io::never_close_handle));
+        os_.push(io::file_descriptor_sink(parentOutFd_, io::never_close_handle));
     }
     /**
      * Initialize child process.
@@ -219,8 +219,8 @@ private:
         WRITE_LOG1("ForkManager::initializeChild() called.\n");
         ::close(parentInFd_);
         ::close(parentOutFd_);
-        is_.push(io::file_descriptor_source(childInFd_));
-        os_.push(io::file_descriptor_sink(childOutFd_));
+        is_.push(io::file_descriptor_source(childInFd_, io::never_close_handle));
+        os_.push(io::file_descriptor_sink(childOutFd_, io::never_close_handle));
     }
     /**
      * Finalize parent process.
