@@ -426,7 +426,7 @@ void Command::doDumpNoFork()
 
         if (isSignal_) {
             std::string msg("Signal received.\n");
-            WRITE_LOG0(msg.c_str()); throw msg;
+            WRITE_LOG0("%s\n", msg.c_str()); throw msg;
         }
         
         /* Retry times when block read of vmdk is failed. */
@@ -570,7 +570,7 @@ void Command::doDumpFork()
 
         if (isSignal_) {
             std::string msg("Signal received.\n");
-            WRITE_LOG0(msg.c_str()); throw msg;
+            WRITE_LOG0("%s\n", msg.c_str()); throw msg;
         }
         
         /* Retry times when block read of vmdk is failed. */
@@ -710,7 +710,7 @@ void Command::doDumpTestFork()
 
         if (isSignal_) {
             std::string msg("Signal received.\n");
-            WRITE_LOG0(msg.c_str()); throw msg;
+            WRITE_LOG0("%s\n", msg.c_str()); throw msg;
         }
         
         try {
@@ -763,7 +763,7 @@ void Command::doDumpTestNoFork()
 
         if (isSignal_) {
             std::string msg("Signal received.\n");
-            WRITE_LOG0(msg.c_str()); throw msg;
+            WRITE_LOG0("%s\n", msg.c_str()); throw msg;
         }
 
         try {
@@ -1076,7 +1076,7 @@ void Command::writeBlocksToVmdk(VddkController& vddkCtrl,
 
         if (isSignal_) {
             std::string msg("Signal received.\n");
-            WRITE_LOG0(msg.c_str()); throw msg;
+            WRITE_LOG0("%s\n", msg.c_str()); throw msg;
         }
         
         /* Read block from dump file. */
