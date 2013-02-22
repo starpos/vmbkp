@@ -4,7 +4,7 @@ CC=gcc
 CXX=g++
 CFLAGS=-fPIC -Wall -Wextra 
 CFLAGS+=`pkg-config --cflags vix-disklib`
-LDFLAGS=-Wl,-rpath,\$$ORIGIN  `pkg-config --libs vix-disklib` -L. -lcrypto -lboost_iostreams-mt -lrt
+LDFLAGS=-Wl,-rpath,\$$ORIGIN -L. `pkg-config --libs vix-disklib` -lcrypto -lboost_iostreams-mt -lrt -lpthread
 ifeq ($(DEBUG),1)
 	CFLAGS+=-DDEBUG -g
 	GPROF=1
@@ -57,22 +57,22 @@ version.hpp: version.hpp.template
 	sed "s|XXXXXXXXXX|`cat ../../VERSION`|" version.hpp.template > version.hpp
 
 libvmdkbkp.so: $(OBJ_FILES)
-	$(CXX) -shared -o $@ $(CFLAGS) $(LDFLAGS) $(OBJ_FILES)
+	$(CXX) -shared -o $@ $(CFLAGS) $(OBJ_FILES) $(LDFLAGS) 
 
 vmdkbkp: vmdkbkp.o $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $(LDFLAGS) -lvmdkbkp vmdkbkp.o
+	$(CXX) -o $@ $(CFLAGS) vmdkbkp.o $(LDFLAGS) -lvmdkbkp 
 
 rdiff2bmp: rdiff2bmp.o $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $(LDFLAGS) -lvmdkbkp rdiff2bmp.o
+	$(CXX) -o $@ $(CFLAGS) rdiff2bmp.o $(LDFLAGS) -lvmdkbkp 
 
 check_dump_and_dump: check_dump_and_dump.o $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $(LDFLAGS) -lvmdkbkp check_dump_and_dump.o
+	$(CXX) -o $@ $(CFLAGS) check_dump_and_dump.o $(LDFLAGS) -lvmdkbkp 
 
 check_digest_and_digest: check_digest_and_digest.o $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $(LDFLAGS) -lvmdkbkp check_digest_and_digest.o
+	$(CXX) -o $@ $(CFLAGS) check_digest_and_digest.o $(LDFLAGS) -lvmdkbkp 
 
 print_bmp: print_bmp.o $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $(LDFLAGS) -lvmdkbkp print_bmp.o
+	$(CXX) -o $@ $(CFLAGS) print_bmp.o $(LDFLAGS) -lvmdkbkp 
 
 ipc_lock_manager: ipc_lock_manager.o ipc_lock_manager.hpp $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $(LDFLAGS) ipc_lock_manager.o
+	$(CXX) -o $@ $(CFLAGS) ipc_lock_manager.o $(LDFLAGS)
