@@ -183,6 +183,11 @@ class LockThread extends Thread
     private void recvLocked() throws IOException {
 
         String locked = in_.readLine();
+        if (locked == null) {
+            String msg = "Locker may be dead.";
+            logger_.warning(msg);
+            throw new IOException(msg);
+        }
         if (! locked.equals("LOCKED")) {
             String msg = "Locker did not say LOCKED.";
             logger_.warning(msg);
@@ -206,6 +211,11 @@ class LockThread extends Thread
     private void recvUnlocked() throws IOException {
 
         String unlocked = in_.readLine();
+        if (unlocked == null) {
+            String msg = "Locker may be dead.";
+            logger_.warning(msg);
+            throw new IOException(msg);
+        }
         if (! unlocked.equals("UNLOCKED")) {
             String msg = "Locker did not say UNLOCKED.";
             logger_.warning(msg);
