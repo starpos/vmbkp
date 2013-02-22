@@ -10,6 +10,7 @@
 #include <algorithm>
 
 #include "header.hpp"
+#include <openssl/md5.h>
 
 /**********************************************************************
  * Local functions
