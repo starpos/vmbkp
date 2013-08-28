@@ -14,13 +14,11 @@ vmbkp:
 vmbkp.manifest:
   pack source and class files into one jar file.
 
-vijava2120100824.jar:
+vijava5120121125.jar:
   vi-java library.
 
 dom4j-1.6.1.jar:
   dom4j required by vi-java.
-
-
 
   
 *******************************************************************************
@@ -28,11 +26,12 @@ How to build.
 *******************************************************************************
 
 Required tools and libraries.
-  * JAVA SE 6 or above.
+  * Oracle Java7 or above.
     java, javac, and jar commands are requited.
     See Makefile for detail.
+    Java6 may build the source code, but we did not test it.
 
-  * VI-Java 2.1GA or above.
+  * VI-Java 5.1 or above.
     http://vijava.sourceforge.net/
     This is included in the distribution (BSD license).
 
