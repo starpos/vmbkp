@@ -6,7 +6,8 @@ CC = gcc
 CXX = g++
 CFLAGS = -fPIC -Wall -Wextra
 CFLAGS += `pkg-config --cflags vix-disklib`
-LDFLAGS = -Wl,-rpath,\$$ORIGIN  -L. `pkg-config --libs vix-disklib` -lcrypto -lboost_iostreams-mt -lrt
+LDFLAGS = -Wl,-rpath,\$$ORIGIN
+LDLIBS = -L. `pkg-config --libs vix-disklib` -lboost_iostreams-mt -lrt -lcrypto
 ifeq ($(DEBUG),1)
 	CFLAGS += -DDEBUG -g
 	GPROF = 1
@@ -16,7 +17,7 @@ else
 endif
 ifeq ($(THREAD),1)
 	CFLAGS += -DVMDKBACKUP_THREAD
-        LDFLAGS += -lboost_thread-mt -lpthread
+        LDLIBS += -lboost_thread-mt -lpthread
 endif
 ifeq ($(GPROF),1)
     CFLAGS+=-pg
@@ -59,22 +60,22 @@ version.hpp: version.hpp.template
 	sed "s|XXXXXXXXXX|`cat ../../VERSION`|" version.hpp.template > version.hpp
 
 libvmdkbkp.so: $(OBJ_FILES)
-	$(CXX) -shared -o $@ $(CFLAGS) $(OBJ_FILES) $(LDFLAGS)
+	$(CXX) -shared -o $@ $(CFLAGS) $(OBJ_FILES) $(LDFLAGS) $(LDLIBS)
 
 vmdkbkp: vmdkbkp.o $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS) -lvmdkbkp
+	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS) -lvmdkbkp $(LDLIBS)
 
 rdiff2bmp: rdiff2bmp.o $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS) -lvmdkbkp
+	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS) -lvmdkbkp $(LDLIBS)
 
 check_dump_and_dump: check_dump_and_dump.o $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS) -lvmdkbkp
+	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS) -lvmdkbkp $(LDLIBS)
 
 check_digest_and_digest: check_digest_and_digest.o $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS) -lvmdkbkp
+	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS) -lvmdkbkp $(LDLIBS)
 
 print_bmp: print_bmp.o $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS) -lvmdkbkp
+	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS) -lvmdkbkp $(LDLIBS)
 
 ipc_lock_manager: ipc_lock_manager.o ipc_lock_manager.hpp $(LIB_FILES)
-	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS)
+	$(CXX) -o $@ $(CFLAGS) $< $(LDFLAGS) $(LDLIBS)

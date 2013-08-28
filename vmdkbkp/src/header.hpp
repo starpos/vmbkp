@@ -23,7 +23,6 @@
 #ifndef VMDKBACKUP_HEADER_HPP_
 #define VMDKBACKUP_HEADER_HPP_
 
-#include <openssl/crypto.h>
 #include <openssl/md5.h>
 
 #include "vixDiskLib.h"
