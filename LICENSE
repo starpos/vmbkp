@@ -3,12 +3,12 @@ maintained libraries.  The externally maintained libraries used by
 VMBKP are:
 
   - VI-Java
-    located at vmbkp/vijava2120100715.jar
+    located as vmbkp/vijava5120121125.jar
     copyrighted by VMware, Inc., Altor Networks., and NetApp. 
     under a 3-clause BSD license/new BSD license.
     
   - DOM4J
-    located at vmbkp/dom4j-1.6.1.jar
+    located as vmbkp/dom4j-1.6.1.jar
     copyrighted by MetaStuff, Ltd.
     under a 3-clause BSD license/new BSD license.
     
@@ -17,7 +17,7 @@ VMBKP are:
     under its original license.
     This is not included in the software distribution.
 
-Copyright (c) 2009,2010 Cybozu Labs, Inc. All Rights Reserved.
+Copyright (c) 2009 Cybozu Labs, Inc. All Rights Reserved.
 The software is released under GPLv2 license described below.
 
 The software distribution does not contain its binary code and VDDK.
