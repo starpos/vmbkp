@@ -31,7 +31,7 @@
         struct tm t;                                                  \
         ::localtime_r(&tv.tv_sec, &t);                                \
         ::printf("%d-%02d-%02d %02d:%02d:%02d.%03d",                  \
-                 t.tm_year + 1900, t.tm_mon, t.tm_mday,               \
+                 t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,           \
                  t.tm_hour, t.tm_min, t.tm_sec,                       \
                  (int)tv.tv_usec / 1000);                             \
     }                                                                 
