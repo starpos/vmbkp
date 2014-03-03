@@ -14,8 +14,8 @@ vmbkp:
 vmbkp.manifest:
   pack source and class files into one jar file.
 
-vijava5120121125.jar:
-  vi-java library.
+vijava55b20130927.jar:
+  vi-java library for vSphere 5.5.
 
 dom4j-1.6.1.jar:
   dom4j required by vi-java.
@@ -31,7 +31,7 @@ Required tools and libraries.
     See Makefile for detail.
     Java6 may build the source code, but we did not test it.
 
-  * VI-Java 5.1 or above.
+  * VI-Java 5.5 or above.
     http://vijava.sourceforge.net/
     This is included in the distribution (BSD license).
 
