@@ -157,7 +157,7 @@ public class GlobalManager
     public String importOvf(String ovfPath, String newVmName)
         throws Exception
     {
-        return importOvf(ovfPath, newVmName, null, null);
+        return importOvf(ovfPath, newVmName, null, null, null);
     }
     
     /**
@@ -168,11 +168,12 @@ public class GlobalManager
      * @param newVmName The name of the newly created virtual machine.
      * @param hostName The name of ESX(i) host.
      * @param datastoreName The name of datastore.
+     * @param folderName Folder name. can be null.
      * @return moref string in success.
      *
      */
     public String importOvf(String ovfPath, String newVmName,
-                             String hostName, String datastoreName)
+                             String hostName, String datastoreName, String folderName)
         throws Exception
     {
         if (conn_.isConnected() == false) { conn_.connect(); }
@@ -191,7 +192,11 @@ public class GlobalManager
             = new OvfCreateImportSpecParams();
         String ovfDescriptor = "";
 
-        vmFolder = (Folder) host.getVms()[0].getParent();
+        if (folderName == null) {
+            vmFolder = (Folder) host.getVms()[0].getParent();
+        } else {
+            vmFolder = getFolder(folderName);
+        }
 
         importSpecParams.setHostSystem(host.getMOR());
         importSpecParams.setLocale("US");
@@ -571,5 +576,17 @@ public class GlobalManager
             throw new Exception("datastore is null.");
         }
         return datastore;
+    }
+
+    /**
+     * Get a folder.
+     * @param name Folder name.
+     * @return found folder
+     */
+    public Folder getFolder(String name) throws Exception
+    {
+        ManagedEntity folder = conn_.searchManagedEntity("Folder", name);
+        if (folder == null) { throw new Exception("folder is not found."); }
+        return (Folder)folder;
     }
 }

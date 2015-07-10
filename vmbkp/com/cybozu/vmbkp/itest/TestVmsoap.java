@@ -60,6 +60,7 @@ public class TestVmsoap
      */
     private static final String hostName_ = "esxihostname";
     private static final String datastoreName_ = "storagename";
+    private static final String folderName_ = "foldername";
 
     /*************************************************************************/
     
@@ -207,11 +208,11 @@ public class TestVmsoap
      * Ovf import test.
      */
     public static void importOvf
-        (String ovfPath, String newName, String hostName, String datastoreName)
+        (String ovfPath, String newName, String hostName, String datastoreName, String folderName)
         throws Exception
     {
         String morefOfNewVm =
-            gm_.importOvf(ovfPath, newName, hostName, datastoreName);
+            gm_.importOvf(ovfPath, newName, hostName, datastoreName, folderName);
         
         if (morefOfNewVm == null) {
             System.out.printf("importOvf failed\n");
@@ -316,7 +317,7 @@ public class TestVmsoap
                 
             String morefOfNewVm =
                 gm_.importOvf(file.getPath(), "ovftest-" + String.valueOf(i),
-                              hostName_, datastoreName_);
+                              hostName_, datastoreName_, folderName_);
             if (morefOfNewVm == null) {
                 System.out.printf("failed\n");
             } else {

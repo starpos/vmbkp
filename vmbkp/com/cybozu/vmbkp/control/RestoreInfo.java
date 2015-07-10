@@ -19,6 +19,7 @@ public class RestoreInfo
     public int generationId;
     public String hostName;
     public String datastoreName;
+    public String folderName;
     public boolean isNoVmdk;
     public boolean isDryRun;
     public boolean isSan;
@@ -35,6 +36,7 @@ public class RestoreInfo
         generationId = -1;
         hostName = null;
         datastoreName = null;
+        folderName = null;
         isNoVmdk = false;
         isDryRun = false;
         isSan = false;
@@ -65,6 +67,10 @@ public class RestoreInfo
         
         if (cmdLine.isOption("--datastore")) {
             datastoreName = cmdLine.getOptionArgs("--datastore").get(0);
+        }
+
+        if (cmdLine.isOption("--folder")) {
+            folderName = cmdLine.getOptionArgs("--folder").get(0);
         }
 
         if (cmdLine.isOption("--novmdk")) {

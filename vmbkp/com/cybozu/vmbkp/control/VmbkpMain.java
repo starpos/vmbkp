@@ -1173,6 +1173,7 @@ public class VmbkpMain
         String newVmName = restoreInfo.newVmName;
         String hostName = restoreInfo.hostName;
         String datastoreName = restoreInfo.datastoreName;
+        String folderName = restoreInfo.folderName;
         boolean ret = false;
         
         /* 2. Log the command. */
@@ -1245,7 +1246,7 @@ public class VmbkpMain
         }
 
         String morefOfNewVm = 
-            gm_.importOvf(ovfPath, newVmName, hostName, datastoreName);
+            gm_.importOvf(ovfPath, newVmName, hostName, datastoreName, folderName);
         assert (morefOfNewVm != null);
         msg = "import succeeded.";
         System.out.println(msg); logger_.info(msg);

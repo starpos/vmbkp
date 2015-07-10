@@ -99,6 +99,7 @@ public class VmbkpCommandLine
         /* optional for restore */
         registerOption("--host", 1); 
         registerOption("--datastore", 1);
+        registerOption("--folder", 1);
 
         /* optional for restore/check */
         registerOption("--generation", 1);
@@ -226,6 +227,7 @@ public class VmbkpCommandLine
              "  --generation <id>:  generation id to restore.\n" +
              "  --host <name>:      VMware host to restore.\n" +
              "  --datastore <name>: VMware datastore to restore.\n" +
+             "  --folder <name>:    VMware folder to restore. (path is not supported now)\n" +
              "  --novmdk:           restore except vmdk contents.\n" +
              "  --dryrun:           do not restore really.\n" +
              "  --san:              use SAN transfer instead of NBD.\n" +
