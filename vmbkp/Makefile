@@ -14,7 +14,9 @@ endif
 default: build
 all: build jar doc
 clean_all: clean clean_jar clean_doc
-rebuild: clean build
+rebuild:
+	$(MAKE) clean
+	$(MAKE) build
 build: version build_config build_util build_soap build_profile build_control build_itest
 
 clean:
