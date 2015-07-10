@@ -193,6 +193,7 @@ public class GlobalManager
 
         vmFolder = (Folder) host.getVms()[0].getParent();
 
+        importSpecParams.setHostSystem(host.getMOR());
         importSpecParams.setLocale("US");
         importSpecParams.setEntityName(newVmName);
         importSpecParams.setDeploymentOption("");
@@ -206,7 +207,12 @@ public class GlobalManager
         ovfDescriptor = readOvfContent(ovfPath);
 
         /* create ovf descriptor */
-        ovfDescriptor = escapeSpecialChars(ovfDescriptor);
+        final String apiVerStr = conn_.getServiceInstance().getAboutInfo().getApiVersion();
+        final float apiVer = Float.parseFloat(apiVerStr);
+        if (apiVer < 5.5) {
+            ovfDescriptor = escapeSpecialChars(ovfDescriptor);
+            logger_.info("escapeSpecialChars.");
+        }
         //logger_.info("ovfDesc: " + ovfDescriptor);
 
         ResourcePool rp = ((ComputeResource) host.getParent()).getResourcePool();
